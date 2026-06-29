@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | Sakthi Murugan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Social Icons Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  .project-image-container { width:100%; height:220px; border-radius:12px; overflow:hidden; position:relative; background:var(--bg3); margin-bottom:1.5rem; border:1px solid var(--card-border); }
+  .project-image-container img { width:100%; height:100%; object-fit:cover; }
+  .project-image-overlay { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;cursor:pointer; opacity:0;background:rgba(0,0,0,0.7);transition:opacity 0.3s; }
+  .project-image-container:hover .project-image-overlay { opacity:1; }
+  .project-image-overlay span { color:#fff;font-size:1.5rem; }
+  .project-image-overlay p { color:rgba(255,255,255,0.8);font-size:0.78rem;font-family:'poppins',sans-serif; }
+  .no-image { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0.5rem;color:var(--text-dim);cursor:pointer; }
+  .no-image span { font-size:2.5rem; }
+  .no-image small { font-size:0.78rem;font-family:'poppins',sans-serif; }
+  .upload-progress { display:none;margin-top:0.5rem;height:4px;background:rgba(255,255,255,0.1);border-radius:100px;overflow:hidden; }
+  .upload-progress-bar { height:100%;background:linear-gradient(90deg,var(--purple),var(--accent-bright));border-radius:100px;width:0;transition:width 0.4s; }
+  .projects-full-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem; }
+  .project-full-card { background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:2rem;transition:var(--transition); }
+  .project-full-card:hover { border-color:var(--accent);transform:translateY(-4px);box-shadow:0 20px 50px rgba(123,94,167,0.2); }
+  .project-full-card.featured-card { border-color:var(--purple);grid-column:span 2; }
+  @media(max-width:768px){ .project-full-card.featured-card{grid-column:span 1;} }
+  .project-img-wrap { margin-bottom:1.5rem; }
+
+  /* Modal */
+  .modal-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:2000;align-items:center;justify-content:center;padding:2rem; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;padding:2.5rem; }
+  .modal-close { float:right;background:none;border:none;color:var(--text-dim);font-size:1.5rem;cursor:pointer; }
+  .modal-close:hover { color:var(--white); }
+</style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">sakthi<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="portfolio.html" class="active">Portfolio</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn-hire">Hire Me</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+    <a href="contact.html" class="btn-hire">Hire Me</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="section-label">PORTFOLIO</div>
+  <h1>Projects &amp; <em>Case Studies</em></h1>
+  <p>Real projects, real results. From AI automation workflows to performance marketing campaigns.</p>
+</section>
+
+<!-- FILTERS -->
+<div style="padding:0 2rem;max-width:1200px;margin:0 auto">
+  <div class="portfolio-filters">
+    <button class="filter-btn active" data-filter="all">All Projects</button>
+    <button class="filter-btn" data-filter="automation">AI Automation</button>
+    <button class="filter-btn" data-filter="marketing">Digital Growth</button>
+  </div>
+</div>
+
+<!--IMAGE PRIVIEW MODAL--> 
+<div id="imageModal" class="image-modal">
+  <span class="image-close" onclick="closeImage()">&times;</span>
+  <img class="image-modal-content" id="modalImage">
+</div>
+
+<section class="portfolio-full">
+
+  <div class="projects-full-grid" id="projectsGrid">
+    <!--Project 5-->
+    <div class="project-full-card featured-card reveal" data-category="automation" id="voice-Ai-agent">
+      <div class="project-tag">AI Agent</div>
+      <div class="project-img-wrap">
+        <div class="project-image-container">
+          <img src="image/Voice_AI_Agent.png" alt="AI Voice Agent Workflow" onclick="openImage(this)" style="cursor:pointer">
+        </div>
+      </div>
+      
+      <h3>Voice AI Agent (Jarvis) – Telegram Voice & Text Assistant</h3>
+      
+      <div class="project-meta">
+        <div class="meta-item">
+          <label>Problem</label>
+          <p>
+            Users often need quick answers, information retrieval, or task execution through messaging apps. However, traditional chatbots struggle to process both voice and text inputs, provide contextual responses, and deliver natural voice replies, creating a limited user experience.
+          </p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Solution</label>
+          <p>
+            Built an AI-powered Voice Assistant integrated with Telegram using n8n. The system intelligently processes both voice messages and text inputs, converts voice to text, generates intelligent AI responses, and optionally returns voice replies for a conversational assistant experience.
+          </p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Tech Stack</label>
+          <p>
+            n8n · OpenAI GPT · OpenAI Whisper · Telegram Bot API · OpenAI TTS · Langchain nodes · SERP API
+          </p>
+        </div>
+        <div class="meta-item">
+          <label>Duration</label>
+          <p>1 hour</p>
+        </div>
+      </div>
+      
+      <div class="result-highlight">
+        <p>
+          Result: Built a multi-modal AI assistant capable of handling both voice and text interactions.
+          Users can send voice messages via Telegram, which are automatically transcribed, processed by AI, and returned as intelligent responses.
+          The system also generates natural AI voice responses, creating a conversational assistant experience similar to Jarvis-style voice agents.
+        </p>
+      </div>
+      
+      <div class="project-tags-row">
+        <span>n8n</span>
+        <span>Gemini</span>
+        <span>OpenAi</span>
+        <span>Telegram Bot</span>
+        <span>langchain Memory</span>
+        <span>AI Agent</span>
+        <span>SERP API</span>
+      </div>
+    </div>
+    
+    <!-- PROJECT 1 -->
+     <div class="project-full-card reveal" data-category="automation" id="email-agent">
+      <div class="project-tag">AI Automation</div>
+      <div class="project-img-wrap">
+        <div class="project-image-container">
+          <img src="image/Ai_Email_Automation.png" alt="AI Email Automation Agent Workflow" onclick="openImage(this)" style="cursor:pointer">
+        </div>
+      </div>
+      
+      <h3 style="font-size:1.4rem;color:var(--white);margin-bottom:0.75rem">
+        AI Email Automation Agent (n8n + OpenAI)
+      </h3>
+      
+      <div class="project-meta">
+        <div class="meta-item">
+          <label>Problem</label>
+          <p>Businesses waste hours sending repetitive, manual emails to leads and customers.</p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Solution</label>
+          <p>Built an AI agent that automatically sends personalized emails via Gmail using prompts and webhook triggers.</p>
+        </div>
+        <div class="meta-item">
+          <label>Tech Stack</label>
+          <p>n8n · OpenAI GPT-4 · Gmail API · Webhooks</p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Duration</label>
+          <p>15 minutes</p>
+        </div>
+      </div>
+      <div class="result-highlight">
+        <p>Result: Fully automated email communication workflow — 0 manual effort, 100% consistent delivery, personalized at scale.</p>
+      </div>
+      <div class="project-tags-row">
+        <span>n8n</span>
+        <span>OpenAI</span>
+        <span>Gmail API</span>
+        <span>Webhooks</span>
+        <span>AI Automation</span>
+      </div>
+    </div>
+    
+    <!-- Project 2-->
+     <div class="project-full-card reveal" data-category="automation" id="resume-agent">
+      <div class="project-tag">AI Automation</div>
+      <div class="project-img-wrap">
+        <div class="project-image-container">
+          <img src="image/Resume_Analyser.png" alt="AI Resume Analyzer & Cover Letter Generator" onclick="openImage(this)" style="cursor:pointer">
+        </div>
+      </div>
+      
+      <h3 style="font-size:1.4rem;color:var(--white);margin-bottom:0.75rem">
+        AI Resume Analyzer & Cover Letter Generator
+      </h3>
+      
+      <div class="project-meta">
+        <div class="meta-item"><label>Problem</label><p>Job seekers struggle to tailor resumes for each job, losing opportunities.</p></div>
+        <div class="meta-item"><label>Solution</label><p>AI workflow that analyzes JDs, finds skill gaps, optimizes resumes &amp; generates cover letters, then emails report.</p></div>
+        <div class="meta-item"><label>Tech Stack</label><p>n8n · Gemini · Google Sheets · Gmail · AI Agents</p></div>
+        <div class="meta-item"><label>Duration</label><p>2 hours</p></div>
+      </div>
+
+      <div class="result-highlight">
+        <p>Result: End-to-end AI job application automation — from JD input to personalized cover letter in minutes.</p>
+      </div>
+
+      <div class="project-tags-row">
+        <span>n8n</span><span>Gemini</span><span>Google Sheets</span><span>Gmail</span><span>AI Agents</span>
+      </div>
+    </div>
+    
+    <!-- PROJECT 3 -->
+    <div class="project-full-card reveal" data-category="automation" id="rag-agent">
+      <div class="project-tag">AI Automation</div>
+
+      <div class="project-img-wrap">
+        <div class="project-image-container">
+          <img src="image/rag_workflow.png" alt="Self-RAG Knowledge Assistant" onclick="openImage(this)" style="cursor:pointer">
+        </div>
+      </div>
+
+      <h3>Self-RAG Knowledge Assistant</h3>
+      
+      <div class="project-meta">
+        <div class="meta-item"><label>Description</label><p>Retrieval-Augmented Generation system with self-evaluation loop to validate accuracy of AI answers.</p></div>
+        <div class="meta-item"><label>Tech Stack</label><p>Python · HuggingFace · FAISS · LLM</p></div>
+        <div class="meta-item"><label>Features</label><p>Retrieves docs → Generates answers → Self-validates → Re-generates if needed</p></div>
+        <div class="meta-item"><label>Duration</label><p>1 hour</p></div>
+      </div>
+
+      <div class="result-highlight">
+        <p>Result: Demonstrates strong AI engineering fundamentals — production-grade RAG with accuracy self-checking.</p>
+      </div>
+
+      <div class="project-tags-row">
+        <span>Python</span><span>HuggingFace</span><span>FAISS</span><span>RAG</span><span>NLP</span>
+      </div>
+    </div>
+    <!--Project 4-->
+    <div class="project-full-card reveal" data-category="automation" id="rag-chatbot">
+      <div class="project-tag">AI Agent</div>
+      <div class="project-img-wrap">
+        <div class="project-image-container">
+          <img src="image/AI_RAG_Chatbot.png" alt="AI RAG Chatbot Workflow" onclick="openImage(this)" style="cursor:pointer">
+        </div>
+      </div>
+      
+      <h3>AI RAG Chatbot for Document Q&amp;A</h3>
+      
+      <div class="project-meta">
+        <div class="meta-item">
+          <label>Problem</label>
+          <p>
+            Organizations struggle to provide instant answers from large knowledge bases 
+            such as FAQs, documents, and internal resources.
+          </p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Solution</label>
+          <p>
+            Built a Retrieval-Augmented Generation (RAG) chatbot using n8n that retrieves 
+            relevant knowledge from a Pinecone vector database and generates accurate 
+            answers using OpenAI.
+          </p>
+        </div>
+        
+        <div class="meta-item">
+          <label>Tech Stack</label>
+          <p>
+            n8n · OpenAI GPT · Pinecone Vector DB · Telegram Bot · Google Drive · Embeddings
+          </p>
+        </div>
+        <div class="meta-item">
+          <label>Duration</label>
+          <p>30 Minutes</p>
+        </div>
+      </div>
+      
+      <div class="result-highlight">
+        <p>
+          Result: AI chatbot capable of retrieving answers from uploaded documents, 
+          handling real-time queries, and responding instantly through Telegram.
+        </p>
+      </div>
+      
+      <div class="project-tags-row">
+        <span>n8n</span>
+        <span>Gemini</span>
+        <span>Pinecone</span>
+        <span>RAG</span>
+        <span>webhook</span>
+        <span>AI Agent</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREATIVE SAMPLES -->
+<section style="padding:5rem 2rem;background:var(--bg2)">
+  <div style="max-width:1200px;margin:0 auto">
+
+    <div class="section-label">CREATIVES</div>
+    <h2 class="section-title">Creative Samples</h2>
+
+    <div class="creative-grid">
+
+      <!-- SOCIAL MEDIA -->
+      <div class="creative-card">
+
+        <div class="creative-icon">📱</div>
+        <h4>Social Media Creatives</h4>
+        <p>LinkedIn posts, Instagram Posts, story templates.</p>
+
+        <div class="creative-images">
+
+          <img src="image/social_media/AI Dynamic governance.jpg" onclick="openImage(this)">
+          <img src="image/social_media/LawRisk module.jpg" onclick="openImage(this)">
+          <img src="image/social_media/01_01_2026Vilton Enterprises Newyear Post.jpg" onclick="openImage(this)">
+          <img src="image/social_media/vilton enterprises.png" onclick="openImage(this)">
+
+        </div>
+      </div>
+
+      <!-- LANDING PAGES -->
+      <div class="creative-card">
+
+        <div class="creative-icon">🖥️</div>
+        <h4>Brand Materials</h4>
+        <p>Logo, LinkedIn banners, Thumnail </p>
+
+        <div class="creative-images">
+
+          <img src="image/Ads_and_banner/NexGli_Logo.jpg" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/DA logo white with text_1-100.jpg" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/CamFort Logo 1-01.png" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/RiskOps LinkedIn Banner Update-09.png" onclick="openImage(this)">
+
+        </div>
+      </div>
+
+      <!-- ADS -->
+      <div class="creative-card">
+
+        <div class="creative-icon">🎬</div>
+        <h4>Ad Creatives & Landing page design</h4>
+        <p>Google Ads, Meta Ads, Landing page, Html mail</p>
+
+        <div class="creative-images">
+
+          <img src="image/Ads_and_banner/Linkedin Ad Copy.jpg" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/Weekly Blog Post 1.jpg" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/Artboard 2.jpg" onclick="openImage(this)">
+          <img src="image/Ads_and_banner/Artboard 4.jpg" onclick="openImage(this)">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <span class="badge pulse-dot">Available for Opportunities</span>
+  <h2>Like what you see? Let's build something great together.</h2>
+  <a href="contact.html" class="btn-primary lg">Start a Project →</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">sakthi<span>.</span></a>
+      <p>AI-driven digital marketing and automation specialist focused on building high-converting funnels and intelligent workflows for modern businesses.</p>
+      <div class="social-row">
+        <a href="https://www.linkedin.com/in/sakthi-murugan-g-809659201/" target="_blank" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://www.instagram.com/growth_journal_by_sakthi/" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://twitter.com/sakthirgs" target="_blank" aria-label="Twitter">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://github.com/sakthirgsm-growect" target="_blank" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h4>Pages</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Services</h4>
+      <a href="services.html">AI Automation</a>
+      <a href="services.html">Digital Marketing</a>
+      <a href="services.html">SEO Strategy</a>
+      <a href="services.html">Creative Design</a>
+    </div>
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <a href="mailto:sakthirgsm@gmail.com">
+        <i class="fa-solid fa-envelope"></i>
+        sakthirgsm@gmail.com
+      </a>
+      <a href="tel:+918807308162">
+        <i class="fa-solid fa-phone"></i>
+        +91 88073 08162
+      </a>
+      
+      <a href="assets/sakthi_murugan_resume_2026.pdf"
+      class="btn-outline sm"
+      download
+      style="margin-top:1rem">
+      
+      <i class="fa-solid fa-download"></i>
+      Download Resume
+    </a>
+  </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Sakthi Murugan | AI Marketing Specialist. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ADD PROJECT MODAL -->
+<div class="modal-overlay" id="addProjectModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="section-label">NEW PROJECT</div>
+    <h3 style="color:var(--white);font-size:1.4rem;margin-bottom:2rem">Add a Project</h3>
+    
+    <div class="form-group">
+      <label>Project Title</label>
+      <input type="text" placeholder="e.g. AI Lead Qualifier Bot">
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select>
+        <option>AI Automation</option>
+        <option>Digital Marketing</option>
+        <option>AI Engineering</option>
+        <option>Creative Design</option>
+        <option>SEO Project</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Problem Statement</label>
+      <textarea placeholder="What problem does this project solve?"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Solution</label>
+      <textarea placeholder="How did you solve it?"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Tech Stack</label>
+      <input type="text" placeholder="e.g. n8n, OpenAI, Gmail API">
+    </div>
+    <div class="form-group">
+      <label>Result / Outcome</label>
+      <input type="text" placeholder="e.g. Saved 10hrs/week, 3x lead volume">
+    </div>
+    <div class="form-group">
+      <label>Project Screenshot / Image</label>
+      <div class="upload-card" onclick="document.getElementById('modal-file').click()" style="padding:2rem">
+        <div class="upload-icon">🖼️</div>
+        <p style="color:var(--text-dim);margin:0">Click to upload image</p>
+      </div>
+      <input type="file" id="modal-file" class="upload-input" accept="image/*">
+    </div>
+    <button class="btn-primary" style="width:100%;padding:1rem;font-size:1rem;margin-top:0.5rem" onclick="saveProject()">Add Project ✓</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+function handleImageUpload(input, containerId) {
+  const container = document.getElementById(containerId);
+  const file = input.files[0];
+  if (!file) return;
+  const progressWrap = input.nextElementSibling;
+  const progressBar = progressWrap.querySelector('.upload-progress-bar');
+  progressWrap.style.display = 'block';
+  let width = 0;
+  const interval = setInterval(() => {
+    width += 10;
+    progressBar.style.width = width + '%';
+    if (width >= 100) {
+      clearInterval(interval);
+      setTimeout(() => { progressWrap.style.display = 'none'; }, 500);
+    }
+  }, 60);
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    container.innerHTML = `<img src="${e.target.result}" alt="Project screenshot" style="width:100%;height:100%;object-fit:cover;">
+    <div class="project-image-overlay" onclick="document.getElementById('${input.id}').click()"><span>🔄</span><p>Change Image</p></div>`;
+  };
+  reader.readAsDataURL(file);
+}
+function openAddProjectModal() { document.getElementById('addProjectModal').classList.add('open'); }
+function closeModal() { document.getElementById('addProjectModal').classList.remove('open'); }
+function saveProject() {
+  alert('Project saved! (In a real deployment, this would save to your backend or localStorage)');
+  closeModal();
+}
+document.getElementById('addProjectModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Filter
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.project-full-card').forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter || card.id === 'add-project-card') {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
